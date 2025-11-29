@@ -28,6 +28,15 @@ print("✅ 环境变量加载成功")
 # 创建Flask应用保持在线
 app = Flask(__name__)
 
+# 全局变量（必须先定义这些变量，才能在Flask路由中使用）
+request_times = deque(maxlen=15)
+user_conversations = {}
+allowed_channel_ids = set()
+bot_active = True
+
+MAX_MEMORY_PER_USER = 1000
+MEMORY_COMPRESSION = True
+
 @app.route('/')
 def home():
     return """
@@ -68,15 +77,6 @@ intents = discord.Intents.default()
 intents.message_content = True
 intents.members = True
 client = discord.Client(intents=intents)
-
-# 全局变量
-request_times = deque(maxlen=15)
-user_conversations = {}
-allowed_channel_ids = set()
-bot_active = True
-
-MAX_MEMORY_PER_USER = 1000
-MEMORY_COMPRESSION = True
 
 PERSONALITY = """
 你的名字叫「诺亚」。你是一位友善、风趣和礼貌的网友。
@@ -234,17 +234,17 @@ async def on_message(message):
             return
 
         elif user_text.startswith("!join"):
-    allowed_channel_ids.add(current_channel_id)
-    await message.channel.send(" 诺亚降临！")
-    return
+            allowed_channel_ids.add(current_channel_id)
+            await message.channel.send("✅ 诺亚降临！")
+            return
 
-elif user_text.startswith("!leave"):
-    if current_channel_id in allowed_channel_ids:
-        allowed_channel_ids.remove(current_channel_id)
-        await message.channel.send("诺亚灰飞烟灭了。")
-    else:
-        await message.channel.send(" 我本来就不在这个频道活动呀。")
-    return
+        elif user_text.startswith("!leave"):
+            if current_channel_id in allowed_channel_ids:
+                allowed_channel_ids.remove(current_channel_id)
+                await message.channel.send("👋 诺亚灰飞烟灭了。")
+            else:
+                await message.channel.send("🤔 我本来就不在这个频道活动呀。")
+            return
 
         elif user_text == "!list_channels":
             if not allowed_channel_ids:
@@ -359,6 +359,4 @@ if __name__ == '__main__':
     except KeyboardInterrupt:
         print("\n👋 手动关闭机器人")
     except Exception as e:
-
         print(f"💥 启动失败: {e}")
-
