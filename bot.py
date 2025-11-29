@@ -9,7 +9,6 @@ from collections import defaultdict, deque
 import asyncio
 from flask import Flask
 from threading import Thread
-from PIL import Image
 import logging
 import random
 import re
@@ -315,8 +314,7 @@ class NoahAdvancedSystem:
             '自然科学': ['科学', '物理', '生物', '自然', '宇宙', '星星', '动物'],
             '色情': ['色色', '涩涩', 'h', 'r18', '成人', '小黄书', '开车'],
             '语言': ['日语', '俄语', '德语', '英语', '粤语', '语法', '单词'],
-            '笑话': ['谐音', '冷笑话', '段子', '笑话', '地狱笑话'],
-            '创作': ['绘画', '写作', '设计', 'oc']
+            '笑话': ['谐音', '冷笑话', '段子', '笑话', '地狱笑话']
         }
         
         for topic, keywords in topic_keywords.items():
@@ -742,7 +740,7 @@ def auto_save_worker():
 # 启动
 def run_web():
     port = int(os.getenv('PORT', 8080))
-    app.run(host='0.0.0.0', port=port)  # 修复这一行：括号已关闭，使用port变量
+    app.run(host='0.0.0.0', port=port)
 
 async def main():
     """主启动函数"""
