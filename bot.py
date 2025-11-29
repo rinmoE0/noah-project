@@ -741,7 +741,7 @@ def auto_save_worker():
 # 启动
 def run_web():
     port = int(os.getenv('PORT', 8080))
-    app.run(host='0.0.0.0', port=8
+    app.run(host='0.0.0.0', port=8080)
 
 async def main():
     """主启动函数"""
@@ -766,5 +766,6 @@ if __name__ == '__main__':
         print("\n👋 手动关闭机器人")
     except Exception as e:
         print(f"💥 启动失败: {e}")
+
 
 
