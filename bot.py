@@ -194,10 +194,6 @@ def ask_gemini(user_id, user_message, username):
         print(f"🌐 网络错误: {e}")
         return "📡 网络有点不稳定，等等我～"
 
-def is_admin(user_id):
-    """检查用户是否是管理员"""
-    return user_id in ADMIN_IDS
-
 # Discord事件处理
 @client.event
 async def on_ready():
@@ -238,23 +234,17 @@ async def on_message(message):
             return
 
         elif user_text.startswith("!join"):
-            if is_admin(user_id):
-                allowed_channel_ids.add(current_channel_id)
-                await message.channel.send("✅ 诺亚已成功加入本频道！")
-            else:
-                await message.channel.send("❌ 需要管理员权限")
-            return
+    allowed_channel_ids.add(current_channel_id)
+    await message.channel.send(" 诺亚降临！")
+    return
 
-        elif user_text.startswith("!leave"):
-            if is_admin(user_id):
-                if current_channel_id in allowed_channel_ids:
-                    allowed_channel_ids.remove(current_channel_id)
-                    await message.channel.send("👋 诺亚已离开本频道。")
-                else:
-                    await message.channel.send("🤔 我本来就不在这个频道活动呀。")
-            else:
-                await message.channel.send("❌ 需要管理员权限")
-            return
+elif user_text.startswith("!leave"):
+    if current_channel_id in allowed_channel_ids:
+        allowed_channel_ids.remove(current_channel_id)
+        await message.channel.send("诺亚灰飞烟灭了。")
+    else:
+        await message.channel.send(" 我本来就不在这个频道活动呀。")
+    return
 
         elif user_text == "!list_channels":
             if not allowed_channel_ids:
@@ -308,8 +298,8 @@ async def on_message(message):
 直接和我聊天即可！
 
 **频道管理:**
-`!join` - 让我加入当前频道 (管理员)
-`!leave` - 让我离开当前频道 (管理员)  
+`!join` - 让我加入当前频道
+`!leave` - 让我离开当前频道  
 `!list_channels` - 查看我已加入的频道
 
 **状态控制:**
@@ -371,3 +361,4 @@ if __name__ == '__main__':
     except Exception as e:
 
         print(f"💥 启动失败: {e}")
+
