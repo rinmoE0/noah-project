@@ -315,7 +315,8 @@ class NoahAdvancedSystem:
             '自然科学': ['科学', '物理', '生物', '自然', '宇宙', '星星', '动物'],
             '色情': ['色色', '涩涩', 'h', 'r18', '成人', '小黄书', '开车'],
             '语言': ['日语', '俄语', '德语', '英语', '粤语', '语法', '单词'],
-            '笑话': ['谐音', '冷笑话', '段子', '笑话', '地狱笑话']
+            '笑话': ['谐音', '冷笑话', '段子', '笑话', '地狱笑话'],
+            '创作': ['绘画', '写作', '设计', 'oc']
         }
         
         for topic, keywords in topic_keywords.items():
@@ -741,10 +742,15 @@ def auto_save_worker():
 # 启动
 def run_web():
     port = int(os.getenv('PORT', 8080))
-    app.run(host='0.0.0.0', port=8080)
+    app.run(host='0.0.0.0', port=port)  # 修复这一行：括号已关闭，使用port变量
 
 async def main():
     """主启动函数"""
+    # 启动自动保存线程
+    save_thread = Thread(target=auto_save_worker, daemon=True)
+    save_thread.start()
+    print("💾 自动保存线程已启动")
+    
     # 启动web服务器
     web_thread = Thread(target=run_web, daemon=True)
     web_thread.start()
@@ -766,6 +772,3 @@ if __name__ == '__main__':
         print("\n👋 手动关闭机器人")
     except Exception as e:
         print(f"💥 启动失败: {e}")
-
-
-
