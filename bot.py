@@ -74,7 +74,6 @@ request_times = deque(maxlen=15)
 user_conversations = {}
 allowed_channel_ids = set()
 bot_active = True
-ADMIN_IDS = [404notfound.404]  # ⚠️ 替换为你的Discord用户ID！
 
 MAX_MEMORY_PER_USER = 1000
 MEMORY_COMPRESSION = True
@@ -370,4 +369,5 @@ if __name__ == '__main__':
     except KeyboardInterrupt:
         print("\n👋 手动关闭机器人")
     except Exception as e:
+
         print(f"💥 启动失败: {e}")
