@@ -308,7 +308,7 @@ class NoahAdvancedSystem:
             '心理学': ['心理', '情绪', '心态', '性格', '人格', 'emo', '开心', '难过'],
             '犯罪学': ['犯罪', '侦探', '推理', '悬疑', '破案', '凶手', '证据', '犯罪心理侧写'],
             '哲学': ['哲学', '人生', '意义', '存在', '思考', '宇宙', '真理'],
-            '九型人格': ['九型', '人格类型', 'enneagram'],
+            '九型人格': ['九型', '人格类型', 'enneagram', '本能副型', '副型', 'tritype', '侧翼'],
             'MBTI': ['mbti', '八维'],
             '游戏': ['第五人格', '光遇', 'minecraft', '游戏', '打游戏', '玩家', '段位'],
             '自然科学': ['科学', '物理', '生物', '自然', '宇宙', '星星', '动物'],
@@ -367,12 +367,6 @@ class NoahAdvancedSystem:
             context += f"\n{i}. {other_nickname}说过：{memory['message']}"
         
         return context
-
-    def add_emoticon(self, emotion_type='neutral'):
-        """根据情绪添加颜文字"""
-        if emotion_type in EMOTICONS and EMOTICONS[emotion_type]:
-            return random.choice(EMOTICONS[emotion_type])
-        return random.choice(EMOTICONS['neutral'])
 
     def should_respond_long(self, message):
         """判断是否需要长篇回复"""
@@ -641,8 +635,7 @@ async def on_message(message):
 
         elif user_text.startswith("!join"):
             noah.allowed_channel_ids.add(current_channel_id)
-            nickname = noah.get_user_nickname(user_id, username)
-            await message.channel.send(f"来啦～{nickname}" + noah.add_emoticon('happy'))
+            await message.channel.send(f"来啦～" + noah.add_emoticon('happy'))
             return
 
         elif user_text.startswith("!leave"):
@@ -702,7 +695,7 @@ async def on_message(message):
 
         elif user_text == "!help":
             help_text = """
-诺亚完整系统：
+诺亚系统：
 
 !join/!leave - 加入/离开频道
 !mynick - 查看你的外号
@@ -770,3 +763,4 @@ if __name__ == '__main__':
         print("\n👋 手动关闭机器人")
     except Exception as e:
         print(f"💥 启动失败: {e}")
+
